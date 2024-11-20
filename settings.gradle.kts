@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "stockF"
 include(":app")
+include(":ui-kit")
