@@ -23,6 +23,10 @@ val Satoshi = FontFamily(
     ),
 )
 
+val LargeFontSize = 16.sp
+val MediumFontSize = 14.sp
+val SmallFontSize = 12.sp
+
 val HeadingH1 = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Bold,
@@ -82,56 +86,56 @@ val BodyXLargeRegular = TextStyle(
 val BodyLargeBold = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Bold,
-    fontSize = 16.sp
+    fontSize = LargeFontSize
 )
 
 val BodyLargeMedium = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Medium,
-    fontSize = 16.sp
+    fontSize = LargeFontSize
 )
 
 val BodyLargeRegular = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Normal,
-    fontSize = 16.sp
+    fontSize = LargeFontSize
 )
 
 
 val BodyMediumBold = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Bold,
-    fontSize = 14.sp
+    fontSize = MediumFontSize
 )
 
 val BodyMediumMedium = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Medium,
-    fontSize = 14.sp
+    fontSize = MediumFontSize
 )
 
 val BodyMediumRegular = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Normal,
-    fontSize = 14.sp
+    fontSize = MediumFontSize
 )
 
 val BodySmallBold = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Bold,
-    fontSize = 12.sp
+    fontSize = SmallFontSize
 )
 
 val BodySmallMedium = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Medium,
-    fontSize = 12.sp
+    fontSize = SmallFontSize
 )
 
 val BodySmallRegular = TextStyle(
     fontFamily = Satoshi,
     fontWeight = FontWeight.Normal,
-    fontSize = 12.sp
+    fontSize = SmallFontSize
 )
 
 
