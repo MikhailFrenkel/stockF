@@ -9,3 +9,4 @@ https://ui8.net/pixlayer/products/invester---stock-investment-app-ui-kit
 
 ### useful resources:
 1. https://material-foundation.github.io/material-theme-builder/
+2. https://www.slickcharts.com/sp500#google_vignette

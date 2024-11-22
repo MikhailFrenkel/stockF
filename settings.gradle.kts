@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "stockF"
 include(":app")
 include(":ui-kit")
+include(":finnhub-client")
+include(":data")

@@ -1,4 +1,4 @@
-package com.frenkel.stockf.features.main.models
+package com.frenkel.ui_kit.ui.models
 
 import androidx.annotation.DrawableRes
 

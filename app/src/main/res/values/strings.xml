@@ -4,4 +4,5 @@
     <string name="home_tab">Home</string>
     <string name="markets_tab">Markets</string>
     <string name="profile_tab">Profile</string>
+    <string name="sth_went_wrong">"Something went wrong!"</string>
 </resources>

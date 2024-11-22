@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.main.components.BottomBar
+import com.frenkel.ui_kit.ui.components.BottomBar
 import com.frenkel.stockf.features.main.home.HomeTab
 import com.frenkel.stockf.features.main.markets.MarketsTab
-import com.frenkel.stockf.features.main.models.TabItem
+import com.frenkel.ui_kit.ui.models.TabItem
 import com.frenkel.stockf.features.main.profile.ProfileTab
 import kotlinx.collections.immutable.persistentListOf
 

@@ -1,7 +1,6 @@
-package com.frenkel.stockf.features.main.components
+package com.frenkel.ui_kit.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -12,8 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import com.frenkel.stockf.features.main.models.TabItem
-import com.frenkel.ui_kit.ui.theme.*
+import com.frenkel.ui_kit.ui.models.TabItem
+import com.frenkel.ui_kit.ui.theme.Greyscale400
+import com.frenkel.ui_kit.ui.theme.Greyscale500
+import com.frenkel.ui_kit.ui.theme.Greyscale900
+import com.frenkel.ui_kit.ui.theme.Primary600
+import com.frenkel.ui_kit.ui.theme.Satoshi
+import com.frenkel.ui_kit.ui.theme.SmallFontSize
+import com.frenkel.ui_kit.ui.theme.White
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
