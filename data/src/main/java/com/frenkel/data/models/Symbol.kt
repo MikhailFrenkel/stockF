@@ -19,5 +19,5 @@ enum class Symbol {
     PEP,
     MCD,
     QCOM,
-    PLNT
+    PLNT,
 }

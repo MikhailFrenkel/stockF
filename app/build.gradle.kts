@@ -79,4 +79,6 @@ dependencies {
     implementation(project(":ui-kit"))
     implementation(project(":finnhub-client"))
     implementation(project(":data"))
+    implementation(project(":database"))
+    implementation(project(":database-android"))
 }

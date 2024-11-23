@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.frenkel.ui_kit.ui.theme.Primary500
 
 @Composable
 internal fun ProgressIndicator() {
@@ -19,7 +20,9 @@ internal fun ProgressIndicator() {
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(
+                color = Primary500
+            )
         }
     }
 }

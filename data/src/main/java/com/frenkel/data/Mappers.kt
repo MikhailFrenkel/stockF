@@ -3,7 +3,8 @@ package com.frenkel.data
 import com.frenkel.data.models.Currency
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
-import com.frenkel.data.models.Symbol
+import com.frenkel.database.models.CurrencyDbo
+import com.frenkel.database.models.StockDbo
 import com.frenkel.finnhub_client.models.StockSymbol
 
 internal fun String.toCurrency(): Currency {
@@ -36,3 +37,22 @@ internal fun StockSymbol.toStockSymbolDto(): StockSymbolDto {
         currency = this.currency.toCurrency(),
     )
 }
+
+internal fun StockDbo.toStockSymbolDto(): StockSymbolDto = StockSymbolDto(
+    symbol = symbol,
+    description = description,
+    currency = currency.code.toCurrency(),
+    price = price,
+    percentChange = percentChange
+)
+
+internal fun StockSymbolDto.toStockDbo(): StockDbo = StockDbo(
+    symbol = symbol,
+    description = description,
+    currency = CurrencyDbo(
+        code = currency.code,
+        symbol = currency.symbol
+    ),
+    price = price,
+    percentChange = percentChange
+)

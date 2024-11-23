@@ -2,6 +2,8 @@ package com.frenkel.stockf.di
 
 import com.frenkel.data.FinnhubRepository
 import com.frenkel.data.FinnhubRepositoryImpl
+import com.frenkel.database.StocksDatabase
+import com.frenkel.database_android.StocksRoomDatabase
 import com.frenkel.finnhub_client.BuildFinnhubApi
 import com.frenkel.finnhub_client.FinnhubApi
 import com.frenkel.stockf.BuildConfig
@@ -26,7 +28,8 @@ val appModule = module {
         )
     }.bind<FinnhubApi>()
 
-    single { FinnhubRepositoryImpl(get()) }.bind<FinnhubRepository>()
+    single { StocksRoomDatabase(get()) }.bind<StocksDatabase>()
+    single { FinnhubRepositoryImpl(get(), get()) }.bind<FinnhubRepository>()
 
     viewModelOf(::HomeViewModel)
 }

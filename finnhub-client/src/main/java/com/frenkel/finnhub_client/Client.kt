@@ -22,7 +22,7 @@ fun startWebSocket() {
             // channel.read ()
             send(Frame.Text("{\"type\":\"subscribe\",\"symbol\":\"AAPL\"}"))
             send(Frame.Text("{\"type\":\"subscribe\",\"symbol\":\"AMZN\"}"))
-            send(Frame.Text("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"))
+            //send(Frame.Text("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}"))
 
             while (true) {
                 val message = incoming.receive() as? Frame.Text

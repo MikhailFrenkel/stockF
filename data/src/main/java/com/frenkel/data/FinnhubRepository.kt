@@ -2,19 +2,17 @@ package com.frenkel.data
 
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
+import com.frenkel.database.StocksDatabase
 import com.frenkel.finnhub_client.FinnhubApi
-import com.frenkel.finnhub_client.models.StockSymbol
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 interface FinnhubRepository {
@@ -25,15 +23,44 @@ interface FinnhubRepository {
 }
 
 class FinnhubRepositoryImpl(
-    private val finnhubApi: FinnhubApi
+    private val finnhubApi: FinnhubApi,
+    private val db: StocksDatabase
 ) : FinnhubRepository {
 
     override fun getStocksInfo(
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>> {
+        coroutineScope.launch {
+            getStocksInfoFromServer(symbols, coroutineScope).collect()
+        }
+
+        return getStocksInfoFromCache()
+    }
+
+    private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
+        return db.observeAll()
+            .map { dbos ->
+                if (dbos.isEmpty()) {
+                    RequestResult.InProgress()
+                } else {
+                    RequestResult.Success(dbos.map { it.toStockSymbolDto() })
+                }
+            }
+            .catch { RequestResult.Error<List<StockSymbolDto>>(error = it) }
+    }
+
+    private fun getStocksInfoFromServer(
+        symbols: List<String>,
+        coroutineScope: CoroutineScope
+    ): Flow<RequestResult<List<StockSymbolDto>>> {
         return fetchStockSymbols(symbols)
             .map { fetchQuotes(it, coroutineScope) }
+            .onEach { result ->
+                result.data?.let {
+                    saveToCache(it)
+                }
+            }
     }
 
     private fun fetchStockSymbols(symbols: List<String>): Flow<RequestResult<List<StockSymbolDto>>> {
@@ -91,5 +118,12 @@ class FinnhubRepositoryImpl(
                 requestResult
             }
         }.await()
+    }
+
+    private suspend fun saveToCache(data: List<StockSymbolDto>) {
+        val dbos = data.map { it.toStockDbo() }
+
+        db.clean()
+        db.insert(dbos)
     }
 }

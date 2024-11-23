@@ -16,6 +16,4 @@ kotlin {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
-    implementation(project(":finnhub-client"))
-    implementation(project(":database"))
 }
