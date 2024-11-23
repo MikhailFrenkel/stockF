@@ -122,8 +122,6 @@ class FinnhubRepositoryImpl(
 
     private suspend fun saveToCache(data: List<StockSymbolDto>) {
         val dbos = data.map { it.toStockDbo() }
-
-        db.clean()
-        db.insert(dbos)
+        db.cleanAndInsert(dbos)
     }
 }

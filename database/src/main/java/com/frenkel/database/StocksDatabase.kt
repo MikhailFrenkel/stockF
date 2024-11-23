@@ -8,4 +8,5 @@ interface StocksDatabase  {
     suspend fun insert(stocks: List<StockDbo>)
     suspend fun remove(stocks: List<StockDbo>)
     suspend fun clean()
+    suspend fun cleanAndInsert(stocks: List<StockDbo>)
 }

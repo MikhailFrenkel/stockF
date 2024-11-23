@@ -34,6 +34,10 @@ private class StocksRoomDatabaseImpl(
     override suspend fun clean() {
         db.getStocksDao().clean()
     }
+
+    override suspend fun cleanAndInsert(stocks: List<StockDbo>) {
+        db.getStocksDao().cleanAndInsert(stocks.map { it.toRoomDbo() })
+    }
 }
 
 @Database(entities = [StockRoomDbo::class], version = 1)
