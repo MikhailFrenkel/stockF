@@ -1,5 +1,6 @@
 package com.frenkel.ui_kit.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 
 val Primary100 = Color(0xFFF3F6F6)

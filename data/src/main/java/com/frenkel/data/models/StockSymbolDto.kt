@@ -4,5 +4,6 @@ data class StockSymbolDto(
     val symbol: String,
     val description: String,
     val currency: Currency,
-    val price: Double? = null
+    val price: Double? = null,
+    val percentChange: Double? = null,
 )

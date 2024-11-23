@@ -3,6 +3,7 @@ package com.frenkel.finnhub_client
 import com.frenkel.finnhub_client.converters.ExchangeTickerConverterFactory
 import com.frenkel.finnhub_client.interceptors.FinnhubApiKeyInterceptor
 import com.frenkel.finnhub_client.models.ExchangeTicker
+import com.frenkel.finnhub_client.models.Quote
 import com.frenkel.finnhub_client.models.StockSymbol
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import kotlinx.serialization.json.Json
@@ -20,6 +21,11 @@ interface FinnhubApi {
     suspend fun fetchStockSymbols(
         @Query("exchange") exchange: ExchangeTicker = ExchangeTicker.US
     ) : Result<List<StockSymbol>>
+
+    @GET("quote")
+    suspend fun fetchQuote(
+        @Query("symbol") symbol: String
+    ) : Result<Quote>
 }
 
 fun BuildFinnhubApi(

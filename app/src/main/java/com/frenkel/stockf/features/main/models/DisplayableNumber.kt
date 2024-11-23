@@ -10,7 +10,7 @@ data class DisplayableNumber(
 
 fun Double.toDisplayableNumber(): DisplayableNumber {
     val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
-        minimumFractionDigits = 2
+        minimumFractionDigits = 0
         maximumFractionDigits = 2
     }
 

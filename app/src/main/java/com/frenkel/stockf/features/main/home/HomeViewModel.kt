@@ -8,12 +8,13 @@ import com.frenkel.stockf.predefinedStockSymbols
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val finnhubRepository: FinnhubRepository
 ) : ViewModel() {
 
-    val state = finnhubRepository.getStocksInfo(predefinedStockSymbols)
+    val state = finnhubRepository.getStocksInfo(predefinedStockSymbols, viewModelScope)
         .map { it.toHomeState() }
         .stateIn(
             viewModelScope,
