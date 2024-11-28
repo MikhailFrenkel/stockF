@@ -4,12 +4,15 @@ import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
 import com.frenkel.database.StocksDatabase
 import com.frenkel.finnhub_client.FinnhubApi
+import com.frenkel.finnhub_client.FinnhubWebSocket
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -24,6 +27,7 @@ interface FinnhubRepository {
 
 class FinnhubRepositoryImpl(
     private val finnhubApi: FinnhubApi,
+    private val finnhubWebSocket: FinnhubWebSocket,
     private val db: StocksDatabase
 ) : FinnhubRepository {
 
@@ -54,30 +58,38 @@ class FinnhubRepositoryImpl(
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>> {
-        return fetchStockSymbols(symbols)
-            .map { fetchQuotes(it, coroutineScope) }
-            .onEach { result ->
-                result.data?.let {
-                    saveToCache(it)
-                }
+        return flow {
+            var requestResult = fetchStockSymbols(symbols)
+            emit(requestResult)
+
+            requestResult = fetchQuotes(requestResult, coroutineScope)
+            emit(requestResult)
+
+            val marketStatus = finnhubApi.fetchMarketStatus().getOrNull()
+            if (marketStatus?.isOpen == true) {
+                emitAll(
+                    observeRealTimeTrades(requestResult)
+                )
             }
+
+        }.onEach { result ->
+            result.data?.let {
+                saveToCache(it)
+            }
+        }
     }
 
-    private fun fetchStockSymbols(symbols: List<String>): Flow<RequestResult<List<StockSymbolDto>>> {
+    private suspend fun fetchStockSymbols(symbols: List<String>): RequestResult<List<StockSymbolDto>> {
         val orderMap = symbols.withIndex().associate { it.value to it.index }
 
-        val apiRequest = flow { emit(finnhubApi.fetchStockSymbols()) }
-            .map { it.toRequestResult() }
-            .map { requestResult ->
-                requestResult.map { stockSymbols ->
-                    stockSymbols
-                        .filter { symbols.contains(it.symbol) }
-                        .sortedBy { orderMap[it.symbol] ?: Int.MAX_VALUE }
-                        .map { it.toStockSymbolDto() }
-                }
+        return finnhubApi.fetchStockSymbols()
+            .toRequestResult()
+            .map { stockSymbols ->
+                stockSymbols
+                    .filter { symbols.contains(it.symbol) }
+                    .sortedBy { orderMap[it.symbol] ?: Int.MAX_VALUE }
+                    .map { it.toStockSymbolDto() }
             }
-
-        return apiRequest
     }
 
     private suspend fun fetchQuotes(
@@ -118,6 +130,31 @@ class FinnhubRepositoryImpl(
                 requestResult
             }
         }.await()
+    }
+
+    private fun observeRealTimeTrades(
+        requestResult: RequestResult<List<StockSymbolDto>>
+    ): Flow<RequestResult<List<StockSymbolDto>>> {
+        return if (requestResult.data == null) {
+            emptyFlow()
+        } else {
+            finnhubWebSocket.observeTrades(requestResult.data!!.map { it.symbol })
+                .map { realTimeTradesResponse ->
+                    requestResult.map { stockSymbols ->
+                        stockSymbols.map { stockSymbol ->
+                            val realTimeTrade = realTimeTradesResponse.data.firstOrNull()
+                            if (realTimeTrade != null &&
+                                stockSymbol.symbol == realTimeTrade.symbol) {
+                                stockSymbol.copy(
+                                    price = realTimeTrade.lastPrice,
+                                )
+                            } else {
+                                stockSymbol
+                            }
+                        }
+                    }
+                }
+        }
     }
 
     private suspend fun saveToCache(data: List<StockSymbolDto>) {

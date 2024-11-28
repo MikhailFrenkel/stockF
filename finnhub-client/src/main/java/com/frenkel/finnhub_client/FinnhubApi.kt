@@ -3,6 +3,7 @@ package com.frenkel.finnhub_client
 import com.frenkel.finnhub_client.converters.ExchangeTickerConverterFactory
 import com.frenkel.finnhub_client.interceptors.FinnhubApiKeyInterceptor
 import com.frenkel.finnhub_client.models.ExchangeTicker
+import com.frenkel.finnhub_client.models.MarketStatus
 import com.frenkel.finnhub_client.models.Quote
 import com.frenkel.finnhub_client.models.StockSymbol
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
@@ -26,6 +27,11 @@ interface FinnhubApi {
     suspend fun fetchQuote(
         @Query("symbol") symbol: String
     ) : Result<Quote>
+
+    @GET("stock/market-status")
+    suspend fun fetchMarketStatus(
+        @Query("exchange") exchange: ExchangeTicker = ExchangeTicker.US
+    ) : Result<MarketStatus>
 }
 
 fun BuildFinnhubApi(

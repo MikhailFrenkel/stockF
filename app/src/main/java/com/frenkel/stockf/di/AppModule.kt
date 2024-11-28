@@ -6,6 +6,8 @@ import com.frenkel.database.StocksDatabase
 import com.frenkel.database_android.StocksRoomDatabase
 import com.frenkel.finnhub_client.BuildFinnhubApi
 import com.frenkel.finnhub_client.FinnhubApi
+import com.frenkel.finnhub_client.FinnhubWebSocket
+import com.frenkel.finnhub_client.FinnhubWebSocketImpl
 import com.frenkel.stockf.BuildConfig
 import com.frenkel.stockf.features.main.home.HomeViewModel
 import okhttp3.OkHttpClient
@@ -28,8 +30,15 @@ val appModule = module {
         )
     }.bind<FinnhubApi>()
 
+    single {
+        FinnhubWebSocketImpl(
+            baseUrl = BuildConfig.FINNHUB_WEBSOCKET_BASE_URL,
+            apiKey = BuildConfig.FINNHUB_API_KEY
+        )
+    }.bind<FinnhubWebSocket>()
+
     single { StocksRoomDatabase(get()) }.bind<StocksDatabase>()
-    single { FinnhubRepositoryImpl(get(), get()) }.bind<FinnhubRepository>()
+    single { FinnhubRepositoryImpl(get(), get(), get()) }.bind<FinnhubRepository>()
 
     viewModelOf(::HomeViewModel)
 }

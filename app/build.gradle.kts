@@ -25,6 +25,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "FINNHUB_API_BASE_URL", "\"https://finnhub.io/api/v1/\"")
+        buildConfigField("String", "FINNHUB_WEBSOCKET_BASE_URL", "\"wss://ws.finnhub.io\"")
     }
 
     buildTypes {
