@@ -8,11 +8,12 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun StocksList(
-    items: ImmutableList<StockUI>
+    items: ImmutableList<StockUI>,
+    onItemClick: (StockUI) -> Unit
 ) {
     LazyColumn {
         items(items) {
-            StockItem(it)
+            StockItem(it, onItemClick)
         }
     }
 }

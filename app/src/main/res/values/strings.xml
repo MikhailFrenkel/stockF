@@ -5,4 +5,7 @@
     <string name="markets_tab">Markets</string>
     <string name="profile_tab">Profile</string>
     <string name="sth_went_wrong">"Something went wrong!"</string>
+    <string name="back_btn_descr">back</string>
+    <string name="oops">Oops!</string>
+    <string name="something_went_wrong">Something Went Wrong!</string>
 </resources>

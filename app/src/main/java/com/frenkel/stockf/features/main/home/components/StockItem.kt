@@ -3,6 +3,7 @@ package com.frenkel.stockf.features.main.home.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,8 @@ import com.frenkel.ui_kit.ui.theme.*
 
 @Composable
 internal fun StockItem(
-    item: StockUI
+    item: StockUI,
+    onClick: (StockUI) -> Unit
 ) {
     val backgroundColor = if (isSystemInDarkTheme()) Greyscale800 else Greyscale50
     val borderColor = if (isSystemInDarkTheme()) Greyscale700 else Greyscale100
@@ -49,6 +51,7 @@ internal fun StockItem(
                 ),
                 shape = RoundedCornerShape(12.dp)
             )
+            .clickable { onClick(item) }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

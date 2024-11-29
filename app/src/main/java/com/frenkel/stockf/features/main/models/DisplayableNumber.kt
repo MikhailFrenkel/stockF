@@ -1,8 +1,10 @@
 package com.frenkel.stockf.features.main.models
 
 import android.icu.text.NumberFormat
+import kotlinx.serialization.Serializable
 import java.util.Locale
 
+@Serializable
 data class DisplayableNumber(
     val value: Double,
     val formatted: String,

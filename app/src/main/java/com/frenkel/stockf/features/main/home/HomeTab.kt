@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
+import com.frenkel.stockf.Route
 import com.frenkel.stockf.features.main.home.components.ErrorMessage
 import com.frenkel.stockf.features.main.home.components.Header
 import com.frenkel.stockf.features.main.home.components.ProgressIndicator
@@ -27,6 +28,7 @@ fun HomeTab(
     val state by viewModel.state.collectAsState()
 
     HomeTab(
+        navController = navController,
         state = state,
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -35,6 +37,7 @@ fun HomeTab(
 
 @Composable
 private fun HomeTab(
+    navController: NavController,
     state: HomeState,
     modifier: Modifier = Modifier
 ) {
@@ -45,7 +48,9 @@ private fun HomeTab(
         when {
             state.isLoading -> ProgressIndicator()
             state.error != null -> ErrorMessage(state.error)
-            state.stocks.isNotEmpty() -> StocksList(state.stocks)
+            state.stocks.isNotEmpty() -> StocksList(state.stocks) {
+                navController.navigate("${Route.StockDetailScreen.path}/${it.symbol}")
+            }
             else -> Toast.makeText(
                 context,
                 stringResource(R.string.sth_went_wrong),

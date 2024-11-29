@@ -1,7 +1,9 @@
 package com.frenkel.stockf.features.main.models
 
 import androidx.annotation.DrawableRes
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class StockUI(
     val symbol: String,
     @DrawableRes val symbolIcon: Int,
