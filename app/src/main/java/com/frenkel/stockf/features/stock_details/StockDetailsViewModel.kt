@@ -6,21 +6,17 @@ import com.frenkel.data.FinnhubRepository
 import com.frenkel.data.models.RequestResult
 import com.frenkel.stockf.features.main.models.toDisplayableNumber
 import com.frenkel.stockf.features.stock_details.models.StockInfoUI
+import com.frenkel.stockf.utils.toFormattedDateString
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class StockDetailsViewModel(
-    symbol: String,
-    finnhubRepository: FinnhubRepository
+    private val symbol: String,
+    private val finnhubRepository: FinnhubRepository
 ) : ViewModel() {
-    private val dateFormatter: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-
     private val _state = MutableStateFlow(StockDetailState())
     val state: StateFlow<StockDetailState> = _state
 
@@ -51,7 +47,7 @@ class StockDetailsViewModel(
                         lowPriceOfTheDay = quoteResponse.data!!.lowPriceOfTheDay.toDisplayableNumber(),
                         openPriceOfTheDay = quoteResponse.data!!.openPriceOfTheDay.toDisplayableNumber(),
                         previousClosePrice = quoteResponse.data!!.previousClosePrice.toDisplayableNumber(),
-                        date = dateFormatter.format(quoteResponse.data!!.date),
+                        date = quoteResponse.data!!.date.toFormattedDateString(),
                         country = companyProfileResponse.data!!.country,
                         exchange = companyProfileResponse.data!!.exchange,
                         industry = companyProfileResponse.data!!.finnhubIndustry,
@@ -70,6 +66,19 @@ class StockDetailsViewModel(
                     isLoading = false,
                     error = errorMessage
                 ) }
+            }
+
+            loadCompanyNews()
+        }
+    }
+
+    private suspend fun loadCompanyNews() {
+        val requestResult = finnhubRepository.getCompanyNews(symbol)
+        if (requestResult.data?.isNotEmpty() == true) {
+            _state.update {
+                it.copy(
+                    companyNews = requestResult.data!!.map { dto -> dto.toUI() }
+                )
             }
         }
     }

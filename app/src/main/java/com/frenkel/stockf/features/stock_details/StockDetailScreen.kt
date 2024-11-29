@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +21,8 @@ import com.frenkel.stockf.features.common.ProgressIndicator
 import com.frenkel.stockf.features.common.TopBar
 import com.frenkel.stockf.features.stock_details.components.CompanyInfoBanner
 import com.frenkel.stockf.features.stock_details.components.InfoSection
-import com.frenkel.stockf.features.stock_details.models.StockInfoUI
+import com.frenkel.stockf.features.stock_details.components.NewsItem
+import com.frenkel.stockf.features.stock_details.components.NewsSectionTitle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -57,7 +60,7 @@ private fun StockDetailScreen(
         when {
             state.isLoading -> ProgressIndicator()
             state.error != null -> ErrorMessage(state.error)
-            state.stockInfo != null -> StockDetailContent(state.stockInfo)
+            state.stockInfo != null -> StockDetailContent(state)
             else -> ErrorMessage(stringResource(R.string.sth_went_wrong))
         }
     }
@@ -65,17 +68,39 @@ private fun StockDetailScreen(
 
 @Composable
 private fun StockDetailContent(
-    stockInfo: StockInfoUI,
+    state: StockDetailState,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
-        CompanyInfoBanner(stockInfo)
+        state.stockInfo?.let {
+            CompanyInfoBanner(state.stockInfo)
+            Spacer(Modifier.height(12.dp))
+        }
 
-        Spacer(Modifier.height(12.dp))
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                if (state.stockInfo != null) {
+                    InfoSection(state.stockInfo)
+                    Spacer(Modifier.height(12.dp))
+                }
+            }
 
-        InfoSection(stockInfo)
+            if (state.companyNews?.isNotEmpty() == true) {
+                item {
+                    NewsSectionTitle()
+                }
+
+                items(state.companyNews) {
+                    NewsItem(
+                        item = it,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
     }
 }

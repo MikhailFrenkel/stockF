@@ -76,10 +76,10 @@ internal fun StockItem(
                 )
             }
 
-            if (item.price != null) {
-                Column(
-                    horizontalAlignment = Alignment.End
-                ) {
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
+                item.price?.let {
                     Text(
                         text = "${item.currencySymbol}${item.price.formatted}",
                         color = titleTextColor(),
@@ -87,14 +87,14 @@ internal fun StockItem(
                         fontSize = MediumFontSize,
                         fontWeight = FontWeight.Bold
                     )
+                }
 
-                    item.pricePercentChange?.let {
-                        Spacer(modifier = Modifier.height(4.dp))
+                item.pricePercentChange?.let {
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                        PercentChange(
-                            percentChange = it
-                        )
-                    }
+                    PercentChange(
+                        percentChange = it
+                    )
                 }
             }
         }

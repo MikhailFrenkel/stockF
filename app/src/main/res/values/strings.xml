@@ -24,4 +24,15 @@
     <string name="ipo_date">IPO date</string>
     <string name="industry">Industry</string>
     <string name="website">Website</string>
+    <string name="latest_news">Latest News</string>
+    <string name="today">today</string>
+    <string name="yesterday">yesterday</string>
+    <string name="two_days_ago">two days ago</string>
+    <string name="three_days_ago">three days ago</string>
+    <string name="days_ago">%1$d days ago</string>
+    <string name="a_week_ago">a week ago</string>
+    <string name="over_a_week_ago">over a week ago</string>
+    <string name="two_weeks_ago">two weeks ago</string>
+    <string name="three_weeks_ago">three weeks ago</string>
+    <string name="a_month_ago">a month ago</string>
 </resources>

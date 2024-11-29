@@ -1,5 +1,6 @@
 package com.frenkel.data
 
+import com.frenkel.data.models.CompanyNewsDto
 import com.frenkel.data.models.CompanyProfile2Dto
 import com.frenkel.data.models.QuoteDto
 import com.frenkel.data.models.RequestResult
@@ -19,6 +20,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Date
 
 interface FinnhubRepository {
     fun getStocksInfo(
@@ -28,6 +32,11 @@ interface FinnhubRepository {
 
     suspend fun getCompanyProfile2(symbol: String): RequestResult<CompanyProfile2Dto>
     suspend fun getQuote(symbol: String): RequestResult<QuoteDto>
+    suspend fun getCompanyNews(
+        symbol: String,
+        from: Date? = null,
+        to: Date? = null
+    ): RequestResult<List<CompanyNewsDto>>
 }
 
 class FinnhubRepositoryImpl(
@@ -57,6 +66,29 @@ class FinnhubRepositoryImpl(
         return finnhubApi.fetchQuote(symbol)
             .toRequestResult()
             .map { it.toDto() }
+    }
+
+    override suspend fun getCompanyNews(
+        symbol: String,
+        from: Date?,
+        to: Date?
+    ): RequestResult<List<CompanyNewsDto>> {
+        val fromDate = if (from != null) {
+            from
+        } else {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date()
+            calendar.add(Calendar.MONTH, -1)
+            calendar.time
+        }
+
+        val toDate = to ?: Date()
+
+        return finnhubApi.fetchCompanyNews(symbol, fromDate, toDate)
+            .toRequestResult()
+            .map { list ->
+                list.map { it.toDto() }
+            }
     }
 
     private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
