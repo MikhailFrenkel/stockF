@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.bundles.koin)
     implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.bundles.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

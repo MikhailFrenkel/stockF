@@ -21,11 +21,11 @@ interface FinnhubWebSocket {
 
 class FinnhubWebSocketImpl(
     private val baseUrl: String,
-    private val apiKey: String
+    private val apiKey: String,
+    private val json: Json = Json
 ) : FinnhubWebSocket {
 
     private val lock = Any()
-    private val json: Json = Json
 
     private val httpClient = HttpClient(CIO) {
         install(WebSockets)

@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
 import com.frenkel.stockf.Route
-import com.frenkel.stockf.features.main.home.components.ErrorMessage
+import com.frenkel.stockf.features.common.ErrorMessage
 import com.frenkel.stockf.features.main.home.components.Header
-import com.frenkel.stockf.features.main.home.components.ProgressIndicator
+import com.frenkel.stockf.features.common.ProgressIndicator
 import com.frenkel.stockf.features.main.home.components.StocksList
 import org.koin.androidx.compose.koinViewModel
 

@@ -1,6 +1,7 @@
 package com.frenkel.ui_kit.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val Primary100 = Color(0xFFF3F6F6)
@@ -58,3 +59,11 @@ val Greyscale900 = Color(0xFF111827)
 val White = Color(0xFFFFFFFF)
 val Orange = Color(0xFFF38744)
 val BlueLight = Color(0xFF36BFFA)
+
+
+
+@Composable
+fun titleTextColor(): Color = if (isSystemInDarkTheme()) Greyscale50 else Greyscale900
+
+@Composable
+fun descriptionTextColor(): Color = if (isSystemInDarkTheme()) Greyscale500 else Greyscale400

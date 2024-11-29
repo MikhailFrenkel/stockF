@@ -1,5 +1,7 @@
 package com.frenkel.data
 
+import com.frenkel.data.models.CompanyProfile2Dto
+import com.frenkel.data.models.QuoteDto
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
 import com.frenkel.database.StocksDatabase
@@ -23,6 +25,9 @@ interface FinnhubRepository {
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>>
+
+    suspend fun getCompanyProfile2(symbol: String): RequestResult<CompanyProfile2Dto>
+    suspend fun getQuote(symbol: String): RequestResult<QuoteDto>
 }
 
 class FinnhubRepositoryImpl(
@@ -40,6 +45,18 @@ class FinnhubRepositoryImpl(
         }
 
         return getStocksInfoFromCache()
+    }
+
+    override suspend fun getCompanyProfile2(symbol: String): RequestResult<CompanyProfile2Dto> {
+        return finnhubApi.fetchCompanyProfile2(symbol)
+            .toRequestResult()
+            .map { it.toDto() }
+    }
+
+    override suspend fun getQuote(symbol: String): RequestResult<QuoteDto> {
+        return finnhubApi.fetchQuote(symbol)
+            .toRequestResult()
+            .map { it.toDto() }
     }
 
     private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {

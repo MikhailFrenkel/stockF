@@ -8,4 +8,20 @@
     <string name="back_btn_descr">back</string>
     <string name="oops">Oops!</string>
     <string name="something_went_wrong">Something Went Wrong!</string>
+    <string name="company_logo">company logo</string>
+    <string name="overview">Overview</string>
+    <string name="company">Company</string>
+    <string name="previous_close">Previous Close</string>
+    <string name="open">Open</string>
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="date">Date</string>
+    <string name="day_s_ranges">Day\'s Ranges</string>
+    <string name="market_capitalization">Market Capitalization</string>
+    <string name="share_outstanding">Share Outstanding</string>
+    <string name="country">Country</string>
+    <string name="exchange">Exchange</string>
+    <string name="ipo_date">IPO date</string>
+    <string name="industry">Industry</string>
+    <string name="website">Website</string>
 </resources>

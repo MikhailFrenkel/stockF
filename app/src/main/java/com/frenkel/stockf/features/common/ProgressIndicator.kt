@@ -1,20 +1,18 @@
-package com.frenkel.stockf.features.main.home.components
+package com.frenkel.stockf.features.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.frenkel.ui_kit.ui.theme.Error600
+import com.frenkel.ui_kit.ui.theme.Primary500
 
 @Composable
-internal fun ErrorMessage(
-    message: String
-) {
+internal fun ProgressIndicator() {
     Column {
         Box(
             modifier = Modifier
@@ -22,7 +20,9 @@ internal fun ErrorMessage(
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = message, color = Error600)
+            CircularProgressIndicator(
+                color = Primary500
+            )
         }
     }
 }

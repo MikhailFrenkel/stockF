@@ -15,5 +15,4 @@ data class Trade(
     @SerialName("p") val lastPrice: Double,
     @SerialName("t") val timestamp: Long,
     @SerialName("v") val volume: Double,
-    @SerialName("c") val conditionCode: Int?
 )

@@ -10,8 +10,11 @@ import com.frenkel.finnhub_client.FinnhubWebSocket
 import com.frenkel.finnhub_client.FinnhubWebSocketImpl
 import com.frenkel.stockf.BuildConfig
 import com.frenkel.stockf.features.main.home.HomeViewModel
+import com.frenkel.stockf.features.stock_details.StockDetailsViewModel
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -21,6 +24,9 @@ val appModule = module {
         BuildFinnhubApi(
             baseUrl = BuildConfig.FINNHUB_API_BASE_URL,
             apiKey = BuildConfig.FINNHUB_API_KEY,
+            json = Json {
+                ignoreUnknownKeys = true
+            },
             okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(
                     HttpLoggingInterceptor()
@@ -33,7 +39,10 @@ val appModule = module {
     single {
         FinnhubWebSocketImpl(
             baseUrl = BuildConfig.FINNHUB_WEBSOCKET_BASE_URL,
-            apiKey = BuildConfig.FINNHUB_API_KEY
+            apiKey = BuildConfig.FINNHUB_API_KEY,
+            json = Json {
+                ignoreUnknownKeys = true
+            }
         )
     }.bind<FinnhubWebSocket>()
 
@@ -41,4 +50,5 @@ val appModule = module {
     single { FinnhubRepositoryImpl(get(), get(), get()) }.bind<FinnhubRepository>()
 
     viewModelOf(::HomeViewModel)
+    viewModel { (symbol: String) -> StockDetailsViewModel(symbol, get()) }
 }

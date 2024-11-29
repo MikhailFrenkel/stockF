@@ -21,6 +21,5 @@ internal fun String.toSymbolIcon(): Int = when (this.uppercase()) {
     Symbol.PEP.name -> R.drawable.ic_pep
     Symbol.MCD.name -> R.drawable.ic_mcd
     Symbol.QCOM.name -> R.drawable.ic_qcom
-    Symbol.PLNT.name -> R.drawable.ic_plnt
     else -> R.drawable.ic_unknown_logo
 }
