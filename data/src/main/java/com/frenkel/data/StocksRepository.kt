@@ -1,13 +1,18 @@
 package com.frenkel.data
 
+import com.frenkel.common.addMonth
+import com.frenkel.data.models.AggregatesResponseDto
 import com.frenkel.data.models.CompanyNewsDto
 import com.frenkel.data.models.CompanyProfile2Dto
 import com.frenkel.data.models.QuoteDto
+import com.frenkel.data.models.RealTimeTradesDto
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
 import com.frenkel.database.StocksDatabase
 import com.frenkel.finnhub_client.FinnhubApi
 import com.frenkel.finnhub_client.FinnhubWebSocket
+import com.frenkel.polygon_client.PolygonApi
+import com.frenkel.polygon_client.models.Timespan
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -20,11 +25,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
-interface FinnhubRepository {
+interface StocksRepository {
     fun getStocksInfo(
         symbols: List<String>,
         coroutineScope: CoroutineScope
@@ -37,13 +41,24 @@ interface FinnhubRepository {
         from: Date? = null,
         to: Date? = null
     ): RequestResult<List<CompanyNewsDto>>
+
+    fun observeRealTimeTrades(symbols: List<String>): Flow<RealTimeTradesDto>
+
+    suspend fun getSymbolAggregates(
+        symbol: String,
+        multiplier: Int,
+        timespan: Timespan,
+        from: Date,
+        to: Date,
+    ): RequestResult<AggregatesResponseDto>
 }
 
-class FinnhubRepositoryImpl(
+class StocksRepositoryImpl(
+    private val polygonApi: PolygonApi,
     private val finnhubApi: FinnhubApi,
     private val finnhubWebSocket: FinnhubWebSocket,
     private val db: StocksDatabase
-) : FinnhubRepository {
+) : StocksRepository {
 
     override fun getStocksInfo(
         symbols: List<String>,
@@ -73,15 +88,7 @@ class FinnhubRepositoryImpl(
         from: Date?,
         to: Date?
     ): RequestResult<List<CompanyNewsDto>> {
-        val fromDate = if (from != null) {
-            from
-        } else {
-            val calendar = Calendar.getInstance()
-            calendar.time = Date()
-            calendar.add(Calendar.MONTH, -1)
-            calendar.time
-        }
-
+        val fromDate = from ?: Date().addMonth(-1)
         val toDate = to ?: Date()
 
         return finnhubApi.fetchCompanyNews(symbol, fromDate, toDate)
@@ -89,6 +96,28 @@ class FinnhubRepositoryImpl(
             .map { list ->
                 list.map { it.toDto() }
             }
+    }
+
+    override fun observeRealTimeTrades(symbols: List<String>): Flow<RealTimeTradesDto> {
+        return finnhubWebSocket.observeTrades(symbols)
+            .map { it.toDto() }
+    }
+
+    override suspend fun getSymbolAggregates(
+        symbol: String,
+        multiplier: Int,
+        timespan: Timespan,
+        from: Date,
+        to: Date
+    ): RequestResult<AggregatesResponseDto> {
+        return polygonApi.fetchAggregates(
+            stocksTicker = symbol,
+            multiplier = multiplier,
+            timespan = timespan,
+            from = from,
+            to = to
+        ).toRequestResult()
+            .map { it.toDto() }
     }
 
     private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
@@ -187,19 +216,23 @@ class FinnhubRepositoryImpl(
         return if (requestResult.data == null) {
             emptyFlow()
         } else {
-            finnhubWebSocket.observeTrades(requestResult.data!!.map { it.symbol })
+            val symbols = requestResult.data!!.map { it.symbol }
+            observeRealTimeTrades(symbols)
                 .map { realTimeTradesResponse ->
                     requestResult.map { stockSymbols ->
                         stockSymbols.map { stockSymbol ->
                             val realTimeTrade = realTimeTradesResponse.data.firstOrNull()
-                            if (realTimeTrade != null &&
-                                stockSymbol.symbol == realTimeTrade.symbol) {
-                                stockSymbol.copy(
-                                    price = realTimeTrade.lastPrice,
-                                )
-                            } else {
-                                stockSymbol
-                            }
+                            stockSymbol.copy(
+                                price = realTimeTrade?.lastPrice
+                            )
+//                            if (realTimeTrade != null &&
+//                                stockSymbol.symbol == realTimeTrade.symbol) {
+//                                stockSymbol.copy(
+//                                    price = realTimeTrade.lastPrice,
+//                                )
+//                            } else {
+//                                stockSymbol
+//                            }
                         }
                     }
                 }
