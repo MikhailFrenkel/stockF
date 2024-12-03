@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 import com.frenkel.ui_kit.ui.theme.Primary500
 
 @Composable
-internal fun ProgressIndicator() {
+internal fun ProgressIndicator(
+    modifier: Modifier = Modifier
+) {
     Column {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(8.dp),
             contentAlignment = Alignment.Center

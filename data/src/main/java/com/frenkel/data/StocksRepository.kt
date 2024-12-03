@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.Date
 
 interface StocksRepository {
@@ -221,18 +220,17 @@ class StocksRepositoryImpl(
                 .map { realTimeTradesResponse ->
                     requestResult.map { stockSymbols ->
                         stockSymbols.map { stockSymbol ->
-                            val realTimeTrade = realTimeTradesResponse.data.firstOrNull()
-                            stockSymbol.copy(
-                                price = realTimeTrade?.lastPrice
-                            )
-//                            if (realTimeTrade != null &&
-//                                stockSymbol.symbol == realTimeTrade.symbol) {
-//                                stockSymbol.copy(
-//                                    price = realTimeTrade.lastPrice,
-//                                )
-//                            } else {
-//                                stockSymbol
-//                            }
+                            val realTimeTrade = realTimeTradesResponse.data.firstOrNull {
+                                it.symbol == stockSymbol.symbol
+                            }
+
+                            if (realTimeTrade != null) {
+                                stockSymbol.copy(
+                                    price = realTimeTrade.lastPrice,
+                                )
+                            } else {
+                                stockSymbol
+                            }
                         }
                     }
                 }

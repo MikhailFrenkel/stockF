@@ -1,4 +1,7 @@
 package com.frenkel.stockf.features.stock_details
 
-interface StockDetailAction {
+import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
+
+sealed interface StockDetailAction {
+    data class OnChartTimeRangeChanged(val timeRange: ChartTimeRange) : StockDetailAction
 }

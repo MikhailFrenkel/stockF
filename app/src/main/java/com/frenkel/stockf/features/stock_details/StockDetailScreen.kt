@@ -19,6 +19,7 @@ import com.frenkel.stockf.R
 import com.frenkel.stockf.features.common.ErrorMessage
 import com.frenkel.stockf.features.common.ProgressIndicator
 import com.frenkel.stockf.features.common.TopBar
+import com.frenkel.stockf.features.stock_details.components.ChartSection
 import com.frenkel.stockf.features.stock_details.components.CompanyInfoBanner
 import com.frenkel.stockf.features.stock_details.components.InfoSection
 import com.frenkel.stockf.features.stock_details.components.NewsItem
@@ -41,6 +42,7 @@ fun StockDetailScreen(
     ) { innerPadding ->
         StockDetailScreen(
             state = state,
+            onAction = viewModel::onAction,
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
@@ -51,6 +53,7 @@ fun StockDetailScreen(
 @Composable
 private fun StockDetailScreen(
     state: StockDetailState,
+    onAction: (StockDetailAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -60,7 +63,7 @@ private fun StockDetailScreen(
         when {
             state.isLoading -> ProgressIndicator()
             state.error != null -> ErrorMessage(state.error)
-            state.stockInfo != null -> StockDetailContent(state)
+            state.stockInfo != null -> StockDetailContent(state, onAction)
             else -> ErrorMessage(stringResource(R.string.sth_went_wrong))
         }
     }
@@ -69,6 +72,7 @@ private fun StockDetailScreen(
 @Composable
 private fun StockDetailContent(
     state: StockDetailState,
+    onAction: (StockDetailAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -82,6 +86,14 @@ private fun StockDetailContent(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
+            item {
+                ChartSection(
+                    state = state,
+                    onAction = onAction
+                )
+                Spacer(Modifier.height(12.dp))
+            }
+
             item {
                 if (state.stockInfo != null) {
                     InfoSection(state.stockInfo)

@@ -1,17 +1,24 @@
 package com.frenkel.data
 
+import com.frenkel.data.models.AggregatesResponseDto
+import com.frenkel.data.models.AggregatesTradeDto
 import com.frenkel.data.models.CompanyNewsDto
 import com.frenkel.data.models.CompanyProfile2Dto
 import com.frenkel.data.models.Currency
 import com.frenkel.data.models.QuoteDto
+import com.frenkel.data.models.RealTimeTradesDto
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
+import com.frenkel.data.models.TradeDto
 import com.frenkel.database.models.CurrencyDbo
 import com.frenkel.database.models.StockDbo
 import com.frenkel.finnhub_client.models.CompanyNews
 import com.frenkel.finnhub_client.models.CompanyProfile2
 import com.frenkel.finnhub_client.models.Quote
+import com.frenkel.finnhub_client.models.RealTimeTradesResponse
 import com.frenkel.finnhub_client.models.StockSymbol
+import com.frenkel.finnhub_client.models.Trade
+import com.frenkel.polygon_client.models.AggregatesResponse
 import java.util.Date
 
 internal fun String.toCurrency(): Currency {
@@ -100,4 +107,36 @@ internal fun CompanyNews.toDto(): CompanyNewsDto = CompanyNewsDto(
     source = source,
     summary = summary,
     url = url
+)
+
+internal fun RealTimeTradesResponse.toDto(): RealTimeTradesDto = RealTimeTradesDto(
+    type = type,
+    data = data.map { it.toDto() }
+)
+
+internal fun Trade.toDto(): TradeDto = TradeDto(
+    symbol = symbol,
+    lastPrice = lastPrice,
+    timestamp = timestamp,
+    volume = volume
+)
+
+internal fun com.frenkel.polygon_client.models.Trade.toDto(): AggregatesTradeDto = AggregatesTradeDto(
+    closePrice = closePrice,
+    highPrice = highPrice,
+    lowPrice = lowPrice,
+    openPrice = openPrice,
+    date = Date(timestamp),
+    volume = volume
+)
+
+internal fun AggregatesResponse.toDto(): AggregatesResponseDto = AggregatesResponseDto(
+    ticker = ticker,
+    queryCount = queryCount,
+    resultsCount = resultsCount,
+    adjusted = adjusted,
+    results = results.map { it.toDto() },
+    status = status,
+    requestId = requestId,
+    count = count
 )

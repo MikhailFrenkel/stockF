@@ -35,4 +35,7 @@
     <string name="two_weeks_ago">two weeks ago</string>
     <string name="three_weeks_ago">three weeks ago</string>
     <string name="a_month_ago">a month ago</string>
+    <string name="chart_time_range_7d">7D</string>
+    <string name="chart_time_range_1m">1M</string>
+    <string name="chart_time_range_1y">1Y</string>
 </resources>

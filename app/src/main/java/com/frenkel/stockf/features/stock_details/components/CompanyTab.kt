@@ -20,8 +20,7 @@ fun CompanyTab(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier

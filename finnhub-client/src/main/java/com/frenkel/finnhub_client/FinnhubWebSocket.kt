@@ -9,8 +9,12 @@ import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -26,6 +30,10 @@ class FinnhubWebSocketImpl(
 ) : FinnhubWebSocket {
 
     private val lock = Any()
+    private val observedSymbols = mutableListOf<String>()
+    private val subscribeSymbolChannel: Channel<String> = Channel()
+    private val tradesChannel: Channel<RealTimeTradesResponse> = Channel()
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private val httpClient = HttpClient(CIO) {
         install(WebSockets)
@@ -37,32 +45,58 @@ class FinnhubWebSocketImpl(
         if (symbols.isEmpty())
             error("symbols cannot be empty.")
 
-
         synchronized(lock) {
-            return observeTradesFlow ?: flow {
-                httpClient.webSocket(
-                    "$baseUrl?token=$apiKey"
-                ) {
-                    symbols.forEach {
-                        val message = RealTimeTradesMessage(
-                            type = MessageType.SUBSCRIBE,
-                            symbol = it
-                        )
-
-                        val messageJson = json.encodeToString(message)
-                        send(Frame.Text(messageJson))
+            if (observeTradesFlow == null) {
+                startWebSocket()
+                observeTradesFlow = flow {
+                    for (trade in tradesChannel) {
+                        emit(trade)
                     }
+                }
+            }
+        }
 
-                    for (frame in incoming) {
-                        if (frame is Frame.Text) {
-                            val text = frame.readText()
+        for (symbol in symbols) {
+            if (!observedSymbols.contains(symbol)) {
+                scope.launch {
+                    subscribeSymbolChannel.send(symbol)
+                }
+            }
+        }
 
-                            try {
-                                val response = json.decodeFromString<RealTimeTradesResponse>(text)
-                                emit(response)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+        return observeTradesFlow!!
+    }
+
+    private fun startWebSocket() {
+        scope.launch {
+            httpClient.webSocket(
+                "$baseUrl?token=$apiKey"
+            ) {
+                launch {
+                    for (symbol in subscribeSymbolChannel) {
+                        if (!observedSymbols.contains(symbol)) {
+                            val message = RealTimeTradesMessage(
+                                type = MessageType.SUBSCRIBE,
+                                symbol = symbol
+                            )
+
+                            val messageJson = json.encodeToString(message)
+                            send(Frame.Text(messageJson))
+                            observedSymbols.add(symbol)
+                        }
+                    }
+                }
+
+                for (frame in incoming) {
+                    if (frame is Frame.Text) {
+                        val text = frame.readText()
+                        println(text)
+
+                        try {
+                            val response = json.decodeFromString<RealTimeTradesResponse>(text)
+                            tradesChannel.send(response)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -72,6 +106,7 @@ class FinnhubWebSocketImpl(
 
     override fun close() {
         httpClient.close()
+        subscribeSymbolChannel.close()
         observeTradesFlow = null
     }
 }

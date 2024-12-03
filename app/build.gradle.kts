@@ -27,6 +27,7 @@ android {
 
         buildConfigField("String", "FINNHUB_API_BASE_URL", "\"https://finnhub.io/api/v1/\"")
         buildConfigField("String", "FINNHUB_WEBSOCKET_BASE_URL", "\"wss://ws.finnhub.io\"")
+        buildConfigField("String", "POLYGON_API_BASE_URL", "\"https://api.polygon.io/\"")
     }
 
     buildTypes {
@@ -72,6 +73,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.bundles.coil)
+    implementation(libs.vico.compose.m3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -83,7 +85,9 @@ dependencies {
 
     implementation(project(":ui-kit"))
     implementation(project(":finnhub-client"))
+    implementation(project(":polygon-client"))
     implementation(project(":data"))
     implementation(project(":database"))
     implementation(project(":database-android"))
+    implementation(project(":common"))
 }
