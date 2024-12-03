@@ -74,6 +74,7 @@ dependencies {
 
     implementation(libs.bundles.coil)
     implementation(libs.vico.compose.m3)
+    implementation(libs.androidx.browser)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

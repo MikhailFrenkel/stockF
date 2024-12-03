@@ -26,6 +26,7 @@ import coil3.compose.AsyncImage
 import com.frenkel.stockf.R
 import com.frenkel.stockf.features.common.Card
 import com.frenkel.stockf.features.stock_details.models.CompanyNewsUI
+import com.frenkel.stockf.utils.openCustomTab
 import com.frenkel.stockf.utils.toRelativeDateString
 import com.frenkel.ui_kit.ui.theme.BodyLargeBold
 import com.frenkel.ui_kit.ui.theme.BodySmallBold
@@ -46,10 +47,7 @@ fun NewsItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.url))
-                context.startActivity(intent)
-            }
+            .clickable { item.url.openCustomTab(context) }
     ) {
         Row(
             modifier = Modifier

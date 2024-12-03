@@ -1,6 +1,8 @@
 package com.frenkel.stockf.utils
 
 import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import com.frenkel.data.models.Symbol
 import com.frenkel.stockf.R
 import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
@@ -53,4 +55,10 @@ internal fun String.toSymbolIcon(): Int = when (this.uppercase()) {
     Symbol.MCD.name -> R.drawable.ic_mcd
     Symbol.QCOM.name -> R.drawable.ic_qcom
     else -> R.drawable.ic_unknown_logo
+}
+
+fun String.openCustomTab(context: Context) {
+    CustomTabsIntent.Builder()
+        .build()
+        .launchUrl(context, Uri.parse(this))
 }

@@ -98,8 +98,15 @@ class StocksRepositoryImpl(
     }
 
     override fun observeRealTimeTrades(symbols: List<String>): Flow<RealTimeTradesDto> {
-        return finnhubWebSocket.observeTrades(symbols)
-            .map { it.toDto() }
+        return flow {
+            val marketStatus = finnhubApi.fetchMarketStatus().getOrNull()
+            if (marketStatus?.isOpen == true) {
+                finnhubWebSocket.observeTrades(symbols)
+                    .map { it.toDto() }
+            } else {
+                emptyFlow<RealTimeTradesDto>()
+            }
+        }
     }
 
     override suspend fun getSymbolAggregates(
@@ -142,12 +149,9 @@ class StocksRepositoryImpl(
             requestResult = fetchQuotes(requestResult, coroutineScope)
             emit(requestResult)
 
-            val marketStatus = finnhubApi.fetchMarketStatus().getOrNull()
-            if (marketStatus?.isOpen == true) {
-                emitAll(
-                    observeRealTimeTrades(requestResult)
-                )
-            }
+            emitAll(
+                observeRealTimeTrades(requestResult)
+            )
 
         }.onEach { result ->
             result.data?.let {
