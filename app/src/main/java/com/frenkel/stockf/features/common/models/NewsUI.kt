@@ -1,12 +1,12 @@
-package com.frenkel.stockf.features.stock_details.models
+package com.frenkel.stockf.features.common.models
 
 import java.util.Date
 
-data class CompanyNewsUI(
+data class NewsUI(
     val category: String,
     val date: Date,
     val headline: String,
-    val id: Int,
+    val id: Long,
     val imageUrl: String,
     val related: String,
     val source: String,

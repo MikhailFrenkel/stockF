@@ -1,4 +1,4 @@
-package com.frenkel.stockf.features.stock_details.components
+package com.frenkel.stockf.features.common.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -22,8 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.common.Card
-import com.frenkel.stockf.features.stock_details.models.CompanyNewsUI
+import com.frenkel.stockf.features.common.models.NewsUI
 import com.frenkel.stockf.utils.openCustomTab
 import com.frenkel.stockf.utils.toRelativeDateString
 import com.frenkel.ui_kit.ui.theme.BodyLargeBold
@@ -37,7 +36,7 @@ import com.frenkel.ui_kit.ui.theme.titleTextColor
 
 @Composable
 fun NewsItem(
-    item: CompanyNewsUI,
+    item: NewsUI,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current

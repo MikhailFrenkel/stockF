@@ -1,4 +1,4 @@
-package com.frenkel.stockf.features.common
+package com.frenkel.stockf.features.common.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.RowScope

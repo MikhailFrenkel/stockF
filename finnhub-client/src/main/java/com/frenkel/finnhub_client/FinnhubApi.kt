@@ -3,12 +3,14 @@ package com.frenkel.finnhub_client
 import com.frenkel.finnhub_client.converters.DateConverterFactory
 import com.frenkel.finnhub_client.converters.ExchangeTickerConverterFactory
 import com.frenkel.finnhub_client.interceptors.FinnhubApiKeyInterceptor
-import com.frenkel.finnhub_client.models.CompanyNews
+import com.frenkel.finnhub_client.models.News
 import com.frenkel.finnhub_client.models.CompanyProfile2
 import com.frenkel.finnhub_client.models.ExchangeTicker
 import com.frenkel.finnhub_client.models.MarketStatus
 import com.frenkel.finnhub_client.models.Quote
 import com.frenkel.finnhub_client.models.StockSymbol
+import com.frenkel.finnhub_client.models.SymbolLookup
+import com.frenkel.finnhub_client.models.SymbolLookupResponse
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -47,7 +49,15 @@ interface FinnhubApi {
         @Query("symbol") symbol: String,
         @Query("from") from: Date,
         @Query("to") to: Date
-    ) : Result<List<CompanyNews>>
+    ) : Result<List<News>>
+
+    @GET("news")
+    suspend fun fetchMarketNews(): Result<List<News>>
+
+    @GET("search")
+    suspend fun searchSymbol(
+        @Query("q") query: String
+    ): Result<SymbolLookupResponse>
 }
 
 fun BuildFinnhubApi(

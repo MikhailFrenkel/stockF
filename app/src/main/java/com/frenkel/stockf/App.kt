@@ -7,10 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.frenkel.data.models.StockSymbolDto
-import com.frenkel.stockf.features.common.NotFoundScreen
+import com.frenkel.stockf.features.common.components.NotFoundScreen
 import com.frenkel.stockf.features.main.MainScreen
-import com.frenkel.stockf.features.main.models.StockUI
 import com.frenkel.stockf.features.stock_details.StockDetailScreen
 import kotlinx.serialization.json.Json
 

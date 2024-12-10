@@ -1,4 +1,4 @@
-package com.frenkel.stockf.features.main.home.components
+package com.frenkel.stockf.features.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

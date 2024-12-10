@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.stock_details.models.CompanyNewsUI
 import com.frenkel.ui_kit.ui.theme.BodyLargeBold
 import com.frenkel.ui_kit.ui.theme.titleTextColor
 

@@ -1,8 +1,5 @@
-package com.frenkel.stockf.features.common
+package com.frenkel.stockf.features.common.components
 
-import android.content.Intent
-import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

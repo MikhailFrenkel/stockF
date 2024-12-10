@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.common.Card
-import com.frenkel.stockf.features.common.HyperlinkText
+import com.frenkel.stockf.features.common.components.Card
+import com.frenkel.stockf.features.common.components.HyperlinkText
 import com.frenkel.stockf.features.stock_details.models.StockInfoUI
 import com.frenkel.ui_kit.ui.theme.BodyMediumMedium
 import com.frenkel.ui_kit.ui.theme.titleTextColor

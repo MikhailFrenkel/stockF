@@ -17,6 +17,9 @@ interface StocksDao {
     @Query("SELECT * FROM stocks WHERE favorite = 1")
     fun observeFavoriteStocks(): Flow<List<StockRoomDbo>>
 
+    @Query("SELECT * FROM stocks WHERE trending = 1")
+    fun observeTrendingStocks(): Flow<List<StockRoomDbo>>
+
     @Query("SELECT * FROM stocks WHERE symbol = :symbol LIMIT 1")
     suspend fun get(symbol: String): StockRoomDbo?
 

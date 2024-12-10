@@ -3,8 +3,6 @@ package com.frenkel.stockf.features.main.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.frenkel.data.StocksRepository
-import com.frenkel.stockf.features.main.toHomeState
-import com.frenkel.stockf.features.main.toStockUI
 import com.frenkel.stockf.predefinedStockSymbols
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +20,7 @@ class HomeViewModel(
     val state: StateFlow<HomeState> = _state
 
     init {
-        repository.getStocksInfo(predefinedStockSymbols, viewModelScope)
+        repository.getTrendingStocks(predefinedStockSymbols, viewModelScope)
             .map { it.toHomeState { stocks ->
                 _state.value.copy(
                     isLoading = false,

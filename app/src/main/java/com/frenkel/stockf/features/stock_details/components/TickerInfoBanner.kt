@@ -1,6 +1,5 @@
 package com.frenkel.stockf.features.stock_details.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,19 +8,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.common.PercentChange
+import com.frenkel.stockf.features.common.components.PercentChange
 import com.frenkel.stockf.features.stock_details.models.StockInfoUI
 import com.frenkel.stockf.utils.toSymbolIcon
 import com.frenkel.ui_kit.ui.theme.*

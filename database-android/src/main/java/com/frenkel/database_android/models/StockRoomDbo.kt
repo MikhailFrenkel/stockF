@@ -15,7 +15,8 @@ data class StockRoomDbo(
     @ColumnInfo("price") val price: Double? = null,
     @ColumnInfo("percentChange") val percentChange: Double? = null,
     @ColumnInfo("favorite") val favorite: Boolean = false,
-    @ColumnInfo("imageUrl") val imageUrl: String? = null
+    @ColumnInfo("imageUrl") val imageUrl: String? = null,
+    @ColumnInfo("trending") val trending: Boolean = false,
 ) {
     fun mergeWith(other: StockRoomDbo?): StockRoomDbo {
         if (other == null)
@@ -23,7 +24,8 @@ data class StockRoomDbo(
 
         return copy(
             favorite = other.favorite,
-            imageUrl = other.imageUrl
+            imageUrl = other.imageUrl,
+            trending = trending,
         )
     }
 }
@@ -50,7 +52,8 @@ internal fun StockDbo.toRoomDbo(): StockRoomDbo = StockRoomDbo(
     price = price,
     percentChange = percentChange,
     favorite = favorite,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    trending = trending
 )
 
 internal fun StockRoomDbo.toDbo(): StockDbo = StockDbo(
@@ -60,5 +63,6 @@ internal fun StockRoomDbo.toDbo(): StockDbo = StockDbo(
     price = price,
     percentChange = percentChange,
     favorite = favorite,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    trending = trending
 )

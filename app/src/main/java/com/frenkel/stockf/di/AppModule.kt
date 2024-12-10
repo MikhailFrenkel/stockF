@@ -1,5 +1,7 @@
 package com.frenkel.stockf.di
 
+import com.frenkel.data.NewsRepository
+import com.frenkel.data.NewsRepositoryImpl
 import com.frenkel.data.StocksRepository
 import com.frenkel.data.StocksRepositoryImpl
 import com.frenkel.database.StocksDatabase
@@ -12,6 +14,8 @@ import com.frenkel.polygon_client.BuildPolygonApi
 import com.frenkel.polygon_client.PolygonApi
 import com.frenkel.stockf.BuildConfig
 import com.frenkel.stockf.features.main.home.HomeViewModel
+import com.frenkel.stockf.features.main.news.NewsViewModel
+import com.frenkel.stockf.features.main.markets.MarketsViewModel
 import com.frenkel.stockf.features.stock_details.StockDetailsViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -66,7 +70,10 @@ val appModule = module {
 
     single { StocksRoomDatabase(get()) }.bind<StocksDatabase>()
     single { StocksRepositoryImpl(get(), get(), get(), get()) }.bind<StocksRepository>()
+    single { NewsRepositoryImpl(get(), get()) }.bind<NewsRepository>()
 
     viewModelOf(::HomeViewModel)
+    viewModelOf(::MarketsViewModel)
+    viewModelOf(::NewsViewModel)
     viewModel { (symbol: String) -> StockDetailsViewModel(symbol, get()) }
 }

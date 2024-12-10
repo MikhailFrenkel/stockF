@@ -20,13 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.common.ErrorMessage
-import com.frenkel.stockf.features.common.ProgressIndicator
-import com.frenkel.stockf.features.common.TopBar
+import com.frenkel.stockf.features.common.components.ErrorMessage
+import com.frenkel.stockf.features.common.components.ProgressIndicator
+import com.frenkel.stockf.features.common.components.TopBar
 import com.frenkel.stockf.features.stock_details.components.ChartSection
 import com.frenkel.stockf.features.stock_details.components.CompanyInfoBanner
 import com.frenkel.stockf.features.stock_details.components.InfoSection
-import com.frenkel.stockf.features.stock_details.components.NewsItem
+import com.frenkel.stockf.features.common.components.NewsItem
 import com.frenkel.stockf.features.stock_details.components.NewsSectionTitle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

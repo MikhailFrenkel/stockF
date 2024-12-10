@@ -15,12 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.frenkel.stockf.features.common.Card
-import com.frenkel.stockf.features.common.PercentChange
+import com.frenkel.stockf.features.common.components.Card
+import com.frenkel.stockf.features.common.components.PercentChange
 import com.frenkel.stockf.features.main.models.StockUI
 import com.frenkel.stockf.utils.toSymbolIcon
 import com.frenkel.ui_kit.ui.theme.MediumFontSize

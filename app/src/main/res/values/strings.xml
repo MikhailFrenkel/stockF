@@ -3,7 +3,7 @@
 
     <string name="home_tab">Home</string>
     <string name="markets_tab">Markets</string>
-    <string name="profile_tab">Profile</string>
+    <string name="news_tab">News</string>
     <string name="sth_went_wrong">"Something went wrong!"</string>
     <string name="back_btn_descr">back</string>
     <string name="oops">Oops!</string>
@@ -40,4 +40,8 @@
     <string name="chart_time_range_1y">1Y</string>
     <string name="trending_stocks">Trending Stocks</string>
     <string name="favorite_stocks">Favorite Stocks</string>
+    <string name="no_news">No News</string>
+    <string name="clear">clear</string>
+    <string name="search_ticker">Search Ticker</string>
+    <string name="no_results_found">No Results Found</string>
 </resources>

@@ -1,12 +1,10 @@
-package com.frenkel.data.models
+package com.frenkel.database.models
 
-import java.util.Date
-
-data class CompanyNewsDto(
+data class NewsDbo(
+    val id: Long,
     val category: String,
-    val timestamp: Date,
+    val timestamp: Long,
     val headline: String,
-    val id: Int,
     val imageUrl: String,
     val related: String,
     val source: String,

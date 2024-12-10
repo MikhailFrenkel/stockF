@@ -4,18 +4,18 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
 import com.frenkel.stockf.Route
-import com.frenkel.stockf.features.common.ErrorMessage
-import com.frenkel.stockf.features.main.home.components.Header
-import com.frenkel.stockf.features.common.ProgressIndicator
+import com.frenkel.stockf.features.common.components.ErrorMessage
+import com.frenkel.stockf.features.common.components.Header
+import com.frenkel.stockf.features.common.components.ProgressIndicator
 import com.frenkel.stockf.features.main.home.components.StocksList
 import org.koin.androidx.compose.koinViewModel
 
@@ -25,7 +25,7 @@ fun HomeTab(
     viewModel: HomeViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeTab(
         navController = navController,

@@ -1,8 +1,7 @@
-package com.frenkel.stockf.features.main
+package com.frenkel.stockf.features.main.home
 
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
-import com.frenkel.stockf.features.main.home.HomeState
 import com.frenkel.stockf.features.main.models.StockUI
 import com.frenkel.stockf.features.main.models.toDisplayableNumber
 

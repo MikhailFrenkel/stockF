@@ -2,21 +2,24 @@ package com.frenkel.data
 
 import com.frenkel.data.models.AggregatesResponseDto
 import com.frenkel.data.models.AggregatesTradeDto
-import com.frenkel.data.models.CompanyNewsDto
+import com.frenkel.data.models.NewsDto
 import com.frenkel.data.models.CompanyProfile2Dto
 import com.frenkel.data.models.Currency
 import com.frenkel.data.models.QuoteDto
 import com.frenkel.data.models.RealTimeTradesDto
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
+import com.frenkel.data.models.SymbolLookupDto
 import com.frenkel.data.models.TradeDto
 import com.frenkel.database.models.CurrencyDbo
+import com.frenkel.database.models.NewsDbo
 import com.frenkel.database.models.StockDbo
-import com.frenkel.finnhub_client.models.CompanyNews
+import com.frenkel.finnhub_client.models.News
 import com.frenkel.finnhub_client.models.CompanyProfile2
 import com.frenkel.finnhub_client.models.Quote
 import com.frenkel.finnhub_client.models.RealTimeTradesResponse
 import com.frenkel.finnhub_client.models.StockSymbol
+import com.frenkel.finnhub_client.models.SymbolLookup
 import com.frenkel.finnhub_client.models.Trade
 import com.frenkel.polygon_client.models.AggregatesResponse
 import java.util.Date
@@ -60,6 +63,7 @@ internal fun StockDbo.toStockSymbolDto(): StockSymbolDto = StockSymbolDto(
     percentChange = percentChange,
     favorite = favorite,
     imageUrl = imageUrl,
+    trending = trending
 )
 
 internal fun StockSymbolDto.toStockDbo(): StockDbo = StockDbo(
@@ -73,6 +77,7 @@ internal fun StockSymbolDto.toStockDbo(): StockDbo = StockDbo(
     percentChange = percentChange,
     favorite = favorite,
     imageUrl = imageUrl,
+    trending = trending
 )
 
 internal fun CompanyProfile2.toDto(): CompanyProfile2Dto = CompanyProfile2Dto(
@@ -101,11 +106,35 @@ internal fun Quote.toDto(): QuoteDto = QuoteDto(
     date = Date(timestamp * 1000)
 )
 
-internal fun CompanyNews.toDto(): CompanyNewsDto = CompanyNewsDto(
+internal fun News.toDto(): NewsDto = NewsDto(
     category = category,
-    timestamp = Date(timestamp * 1000),
+    timestamp = timestamp,
     headline = headline,
     id = id,
+    imageUrl = imageUrl,
+    related = related,
+    source = source,
+    summary = summary,
+    url = url
+)
+
+internal fun NewsDbo.toDto(): NewsDto = NewsDto(
+    id = id,
+    category = category,
+    timestamp = timestamp,
+    headline = headline,
+    imageUrl = imageUrl,
+    related = related,
+    source = source,
+    summary = summary,
+    url = url
+)
+
+internal fun NewsDto.toDbo(): NewsDbo = NewsDbo(
+    id = id,
+    category = category,
+    timestamp = timestamp,
+    headline = headline,
     imageUrl = imageUrl,
     related = related,
     source = source,
@@ -143,4 +172,11 @@ internal fun AggregatesResponse.toDto(): AggregatesResponseDto = AggregatesRespo
     status = status,
     requestId = requestId,
     count = count
+)
+
+internal fun SymbolLookup.toDto(): SymbolLookupDto = SymbolLookupDto(
+    description = description,
+    displaySymbol = displaySymbol,
+    symbol = symbol,
+    type = type
 )

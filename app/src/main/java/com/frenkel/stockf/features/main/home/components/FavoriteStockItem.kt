@@ -1,6 +1,5 @@
 package com.frenkel.stockf.features.main.home.components
 
-import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,8 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.frenkel.stockf.features.common.Card
-import com.frenkel.stockf.features.common.PercentChange
+import com.frenkel.stockf.features.common.components.Card
+import com.frenkel.stockf.features.common.components.PercentChange
 import com.frenkel.stockf.features.main.models.StockUI
 import com.frenkel.stockf.utils.toSymbolIcon
 import com.frenkel.ui_kit.ui.theme.BodyMediumBold

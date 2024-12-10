@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.frenkel.stockf.features.common.Card
+import com.frenkel.stockf.features.common.components.Card
 import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
 import com.frenkel.ui_kit.ui.theme.BodySmallBold
 import com.frenkel.ui_kit.ui.theme.BodySmallMedium

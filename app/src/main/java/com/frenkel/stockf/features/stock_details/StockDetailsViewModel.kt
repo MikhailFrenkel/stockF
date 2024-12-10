@@ -8,6 +8,7 @@ import com.frenkel.data.StocksRepository
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
 import com.frenkel.polygon_client.models.Timespan
+import com.frenkel.stockf.features.common.toUI
 import com.frenkel.stockf.features.main.models.toDisplayableNumber
 import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
 import com.frenkel.stockf.features.stock_details.models.StockInfoUI

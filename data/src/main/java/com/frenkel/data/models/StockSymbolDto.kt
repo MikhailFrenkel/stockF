@@ -7,5 +7,6 @@ data class StockSymbolDto(
     val price: Double? = null,
     val percentChange: Double? = null,
     val favorite: Boolean = false,
-    val imageUrl: String? = null
+    val imageUrl: String? = null,
+    val trending: Boolean = false,
 )

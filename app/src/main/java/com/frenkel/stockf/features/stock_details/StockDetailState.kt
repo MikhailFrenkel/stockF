@@ -1,7 +1,7 @@
 package com.frenkel.stockf.features.stock_details
 
 import androidx.compose.runtime.Immutable
-import com.frenkel.stockf.features.stock_details.models.CompanyNewsUI
+import com.frenkel.stockf.features.common.models.NewsUI
 import com.frenkel.stockf.features.stock_details.models.StockInfoUI
 import java.util.Date
 
@@ -9,7 +9,7 @@ import java.util.Date
 data class StockDetailState(
     val isLoading: Boolean = true,
     val stockInfo: StockInfoUI? = null,
-    val companyNews: List<CompanyNewsUI>? = null,
+    val companyNews: List<NewsUI>? = null,
     val sevenDaysChartData: Map<Date, Double>? = null,
     val oneMonthChartData: Map<Date, Double>? = null,
     val oneYearChartData: Map<Date, Double>? = null,

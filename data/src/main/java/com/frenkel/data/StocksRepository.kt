@@ -2,12 +2,13 @@ package com.frenkel.data
 
 import com.frenkel.common.addMonth
 import com.frenkel.data.models.AggregatesResponseDto
-import com.frenkel.data.models.CompanyNewsDto
+import com.frenkel.data.models.NewsDto
 import com.frenkel.data.models.CompanyProfile2Dto
 import com.frenkel.data.models.QuoteDto
 import com.frenkel.data.models.RealTimeTradesDto
 import com.frenkel.data.models.RequestResult
 import com.frenkel.data.models.StockSymbolDto
+import com.frenkel.data.models.SymbolLookupDto
 import com.frenkel.database.StocksDatabase
 import com.frenkel.finnhub_client.FinnhubApi
 import com.frenkel.finnhub_client.FinnhubWebSocket
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 interface StocksRepository {
-    fun getStocksInfo(
+    fun getTrendingStocks(
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>>
@@ -41,7 +42,7 @@ interface StocksRepository {
         symbol: String,
         from: Date? = null,
         to: Date? = null
-    ): RequestResult<List<CompanyNewsDto>>
+    ): RequestResult<List<NewsDto>>
 
     fun observeRealTimeTrades(symbols: List<String>): Flow<RealTimeTradesDto>
 
@@ -56,6 +57,8 @@ interface StocksRepository {
     suspend fun updateOrSave(stock: StockSymbolDto)
 
     suspend fun getStock(symbol: String): RequestResult<StockSymbolDto>
+
+    fun searchSymbol(query: String): Flow<RequestResult<List<SymbolLookupDto>>>
 }
 
 class StocksRepositoryImpl(
@@ -65,15 +68,15 @@ class StocksRepositoryImpl(
     private val db: StocksDatabase
 ) : StocksRepository {
 
-    override fun getStocksInfo(
+    override fun getTrendingStocks(
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>> {
         coroutineScope.launch {
-            getStocksInfoFromServer(symbols, coroutineScope).collect()
+            getTrendingStocksFromServer(symbols, coroutineScope).collect()
         }
 
-        return getStocksInfoFromCache()
+        return getTrendingStocksFromCache()
     }
 
     override suspend fun getCompanyProfile2(symbol: String): RequestResult<CompanyProfile2Dto> {
@@ -92,7 +95,7 @@ class StocksRepositoryImpl(
         symbol: String,
         from: Date?,
         to: Date?
-    ): RequestResult<List<CompanyNewsDto>> {
+    ): RequestResult<List<NewsDto>> {
         val fromDate = from ?: Date().addMonth(-1)
         val toDate = to ?: Date()
 
@@ -154,8 +157,18 @@ class StocksRepositoryImpl(
         }
     }
 
-    private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
-        return db.observeAll()
+    override fun searchSymbol(query: String): Flow<RequestResult<List<SymbolLookupDto>>> {
+        return flow {
+            emit(RequestResult.InProgress())
+            emit(finnhubApi.searchSymbol(query)
+                .toRequestResult()
+                .map { response -> response.result.map { it.toDto() } }
+            )
+        }
+    }
+
+    private fun getTrendingStocksFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
+        return db.observeTrending()
             .map { dbos ->
                 if (dbos.isEmpty()) {
                     RequestResult.InProgress()
@@ -166,12 +179,12 @@ class StocksRepositoryImpl(
             .catch { RequestResult.Error<List<StockSymbolDto>>(error = it) }
     }
 
-    private fun getStocksInfoFromServer(
+    private fun getTrendingStocksFromServer(
         symbols: List<String>,
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>> {
         return flow {
-            var requestResult = fetchStockSymbols(symbols)
+            var requestResult = fetchTrendingStocks(symbols)
             emit(requestResult)
 
             requestResult = fetchQuotes(requestResult, coroutineScope)
@@ -188,7 +201,7 @@ class StocksRepositoryImpl(
         }
     }
 
-    private suspend fun fetchStockSymbols(symbols: List<String>): RequestResult<List<StockSymbolDto>> {
+    private suspend fun fetchTrendingStocks(symbols: List<String>): RequestResult<List<StockSymbolDto>> {
         val orderMap = symbols.withIndex().associate { it.value to it.index }
 
         return finnhubApi.fetchStockSymbols()
@@ -197,7 +210,7 @@ class StocksRepositoryImpl(
                 stockSymbols
                     .filter { symbols.contains(it.symbol) }
                     .sortedBy { orderMap[it.symbol] ?: Int.MAX_VALUE }
-                    .map { it.toStockSymbolDto() }
+                    .map { it.toStockSymbolDto().copy(trending = true) }
             }
     }
 

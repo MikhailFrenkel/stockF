@@ -6,25 +6,18 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.frenkel.stockf.R
-import com.frenkel.ui_kit.ui.components.BottomBar
 import com.frenkel.stockf.features.main.home.HomeTab
 import com.frenkel.stockf.features.main.markets.MarketsTab
+import com.frenkel.stockf.features.main.news.NewsTab
+import com.frenkel.ui_kit.ui.components.BottomBar
 import com.frenkel.ui_kit.ui.models.TabItem
-import com.frenkel.stockf.features.main.profile.ProfileTab
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,9 +39,9 @@ fun MainScreen(
         ),
 
         TabItem(
-            title = stringResource(R.string.profile_tab),
-            selectedIcon = R.drawable.ic_profile_solid,
-            unselectedIcon = R.drawable.ic_profile_linear
+            title = stringResource(R.string.news_tab),
+            selectedIcon = R.drawable.ic_news_solid,
+            unselectedIcon = R.drawable.ic_news_linear
         ),
     )
 
@@ -84,10 +77,7 @@ fun MainScreen(
                     modifier = Modifier.padding(innerPadding)
                 )
 
-                2 -> ProfileTab(
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
-                )
+                2 -> NewsTab(modifier = Modifier.padding(innerPadding))
             }
         }
     }

@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.frenkel.stockf.features.common.ProgressIndicator
+import com.frenkel.stockf.features.common.components.ProgressIndicator
 import com.frenkel.stockf.features.stock_details.StockDetailAction
 import com.frenkel.stockf.features.stock_details.StockDetailState
 import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
