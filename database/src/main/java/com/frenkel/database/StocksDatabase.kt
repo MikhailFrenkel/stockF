@@ -5,8 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface StocksDatabase  {
     fun observeAll(): Flow<List<StockDbo>>
-    suspend fun insert(stocks: List<StockDbo>)
+    fun observeFavoriteStocks(): Flow<List<StockDbo>>
+
+    suspend fun upsert(stocks: List<StockDbo>)
+    suspend fun insert(stock: StockDbo)
     suspend fun remove(stocks: List<StockDbo>)
     suspend fun clean()
-    suspend fun cleanAndInsert(stocks: List<StockDbo>)
+    suspend fun get(symbol: String): StockDbo?
 }

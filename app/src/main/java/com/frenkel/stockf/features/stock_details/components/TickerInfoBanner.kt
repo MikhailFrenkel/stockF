@@ -37,23 +37,16 @@ internal fun CompanyInfoBanner(
     ) {
         val imageSize = 44.dp
 
-        if (stockInfo.logo.isNotEmpty()) {
-            AsyncImage(
-                stockInfo.logo,
-                contentDescription = stringResource(R.string.company_logo),
-                placeholder = painterResource(R.drawable.ic_unknown_logo),
-                modifier = Modifier
-                    .size(imageSize)
-                    .clip(CircleShape)
-            )
-        } else {
-            Icon(
-                painter = painterResource(stockInfo.symbol.toSymbolIcon()),
-                contentDescription = stringResource(R.string.company_logo),
-                modifier = Modifier.size(imageSize),
-                tint = Color.Unspecified
-            )
-        }
+        AsyncImage(
+            model = stockInfo.logo.ifEmpty {
+                stockInfo.symbol.toSymbolIcon()
+            },
+            contentDescription = stringResource(R.string.company_logo),
+            placeholder = painterResource(R.drawable.ic_unknown_logo),
+            modifier = Modifier
+                .size(imageSize)
+                .clip(CircleShape)
+        )
 
         Spacer(Modifier.width(12.dp))
 

@@ -6,6 +6,7 @@ import com.frenkel.common.addMonth
 import com.frenkel.common.modifyDate
 import com.frenkel.data.StocksRepository
 import com.frenkel.data.models.RequestResult
+import com.frenkel.data.models.StockSymbolDto
 import com.frenkel.polygon_client.models.Timespan
 import com.frenkel.stockf.features.main.models.toDisplayableNumber
 import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
@@ -49,8 +50,11 @@ class StockDetailsViewModel(
             val quoteResponse = quoteDeferred.await()
 
             if (companyProfileResponse.data != null && quoteResponse.data != null) {
+                val favorite = repository.getStock(symbol).data?.favorite ?: false
+
                 _state.update { it.copy(
                     isLoading = false,
+                    isFavorite = favorite,
                     stockInfo = StockInfoUI(
                         symbol = companyProfileResponse.data!!.ticker,
                         companyName = companyProfileResponse.data!!.name,
@@ -91,6 +95,7 @@ class StockDetailsViewModel(
     fun onAction(action: StockDetailAction) {
         when (action) {
             is StockDetailAction.OnChartTimeRangeChanged -> onChartTimeRangeChanged(action.timeRange)
+            is StockDetailAction.OnFavoriteChanged -> onFavoriteChanged(action.isFavorite)
         }
     }
 
@@ -207,6 +212,24 @@ class StockDetailsViewModel(
             }
 
             block(chartData)
+        }
+    }
+
+    private fun onFavoriteChanged(isFavorite: Boolean) {
+        _state.value.stockInfo?.let { stockInfo ->
+            viewModelScope.launch {
+                repository.updateOrSave(StockSymbolDto(
+                    symbol = symbol,
+                    description = stockInfo.companyName,
+                    currency = stockInfo.currency,
+                    price = stockInfo.price.value,
+                    percentChange = stockInfo.percentChange.value,
+                    favorite = isFavorite,
+                    imageUrl = stockInfo.logo
+                ))
+
+                _state.update { it.copy(isFavorite = isFavorite) }
+            }
         }
     }
 }

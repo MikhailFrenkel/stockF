@@ -1,12 +1,13 @@
 package com.frenkel.database.models
 
 data class StockDbo(
-    val id: Long = 0,
     val symbol: String,
     val description: String,
     val currency: CurrencyDbo,
     val price: Double? = null,
     val percentChange: Double? = null,
+    val favorite: Boolean = false,
+    val imageUrl: String? = null
 )
 
 data class CurrencyDbo(

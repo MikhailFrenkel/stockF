@@ -9,13 +9,24 @@ import com.frenkel.database.models.StockDbo
 
 @Entity(tableName = "stocks")
 data class StockRoomDbo(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo("symbol") val symbol: String,
+    @PrimaryKey @ColumnInfo("symbol") val symbol: String,
     @ColumnInfo("description") val description: String,
     @Embedded("currency") val currency: CurrencyRoomDbo,
     @ColumnInfo("price") val price: Double? = null,
     @ColumnInfo("percentChange") val percentChange: Double? = null,
-)
+    @ColumnInfo("favorite") val favorite: Boolean = false,
+    @ColumnInfo("imageUrl") val imageUrl: String? = null
+) {
+    fun mergeWith(other: StockRoomDbo?): StockRoomDbo {
+        if (other == null)
+            return this
+
+        return copy(
+            favorite = other.favorite,
+            imageUrl = other.imageUrl
+        )
+    }
+}
 
 data class CurrencyRoomDbo(
     val code: String,
@@ -33,19 +44,21 @@ internal fun CurrencyRoomDbo.toDbo(): CurrencyDbo = CurrencyDbo(
 )
 
 internal fun StockDbo.toRoomDbo(): StockRoomDbo = StockRoomDbo(
-    id = id,
     symbol = symbol,
     description = description,
     currency = currency.toRoomDbo(),
     price = price,
-    percentChange = percentChange
+    percentChange = percentChange,
+    favorite = favorite,
+    imageUrl = imageUrl
 )
 
 internal fun StockRoomDbo.toDbo(): StockDbo = StockDbo(
-    id = id,
     symbol = symbol,
     description = description,
     currency = currency.toDbo(),
     price = price,
-    percentChange = percentChange
+    percentChange = percentChange,
+    favorite = favorite,
+    imageUrl = imageUrl
 )

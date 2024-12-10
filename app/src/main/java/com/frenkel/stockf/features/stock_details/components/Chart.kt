@@ -64,7 +64,7 @@ fun Chart(
                 guideline = null,
                 tick = null,
                 valueFormatter = { _, x, _ ->
-                    data.keys.elementAt(x.toInt()).toFormattedDateString()
+                    data.keys.elementAtOrNull(x.toInt())?.toFormattedDateString() ?: x.toString()
                 },
             ),
         ),

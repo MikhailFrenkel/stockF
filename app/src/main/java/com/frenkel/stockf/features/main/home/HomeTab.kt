@@ -48,7 +48,7 @@ private fun HomeTab(
         when {
             state.isLoading -> ProgressIndicator()
             state.error != null -> ErrorMessage(state.error)
-            state.stocks.isNotEmpty() -> StocksList(state.stocks) {
+            state.stocks.isNotEmpty() -> StocksList(state) {
                 navController.navigate("${Route.StockDetailScreen.path}/${it.symbol}")
             }
             else -> Toast.makeText(

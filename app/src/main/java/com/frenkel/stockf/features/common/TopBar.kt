@@ -1,6 +1,7 @@
 package com.frenkel.stockf.features.common
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -20,10 +21,12 @@ import com.frenkel.ui_kit.ui.theme.White
 @Composable
 fun TopBar(
     title: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
 ) {
     CenterAlignedTopAppBar(
+        modifier = modifier,
         title = title,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors().copy(
             containerColor = MaterialTheme.colorScheme.background
@@ -36,6 +39,7 @@ fun TopBar(
                     tint = if (isSystemInDarkTheme()) White else Greyscale900
                 )
             }
-        }
+        },
+        actions = actions
     )
 }

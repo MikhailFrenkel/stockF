@@ -13,5 +13,6 @@ data class StockDetailState(
     val sevenDaysChartData: Map<Date, Double>? = null,
     val oneMonthChartData: Map<Date, Double>? = null,
     val oneYearChartData: Map<Date, Double>? = null,
+    val isFavorite: Boolean = false,
     val error: String? =  null
 )

@@ -9,5 +9,6 @@ import kotlinx.collections.immutable.persistentListOf
 data class HomeState(
     val isLoading: Boolean = true,
     val stocks: ImmutableList<StockUI> = persistentListOf(),
+    val favoriteStocks: ImmutableList<StockUI>? = null,
     val error: String? = null
 )

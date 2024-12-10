@@ -23,8 +23,24 @@ private class StocksRoomDatabaseImpl(
             }
     }
 
-    override suspend fun insert(stocks: List<StockDbo>) {
-        db.getStocksDao().insert(stocks.map { it.toRoomDbo() })
+    override fun observeFavoriteStocks(): Flow<List<StockDbo>> {
+        return db.getStocksDao().observeFavoriteStocks()
+            .map { stockRoomDbos ->
+                stockRoomDbos.map { it.toDbo() }
+            }
+    }
+
+    override suspend fun upsert(stocks: List<StockDbo>) {
+        val mergedStocks = stocks.map { stock ->
+            val stockRoomDbo = db.getStocksDao().get(stock.symbol)
+            stock.toRoomDbo().mergeWith(stockRoomDbo)
+        }
+
+        db.getStocksDao().insert(mergedStocks)
+    }
+
+    override suspend fun insert(stock: StockDbo) {
+        db.getStocksDao().insert(stock.toRoomDbo())
     }
 
     override suspend fun remove(stocks: List<StockDbo>) {
@@ -35,8 +51,8 @@ private class StocksRoomDatabaseImpl(
         db.getStocksDao().clean()
     }
 
-    override suspend fun cleanAndInsert(stocks: List<StockDbo>) {
-        db.getStocksDao().cleanAndInsert(stocks.map { it.toRoomDbo() })
+    override suspend fun get(symbol: String): StockDbo? {
+        return db.getStocksDao().get(symbol)?.toDbo()
     }
 }
 

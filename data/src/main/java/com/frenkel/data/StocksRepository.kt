@@ -33,6 +33,8 @@ interface StocksRepository {
         coroutineScope: CoroutineScope
     ): Flow<RequestResult<List<StockSymbolDto>>>
 
+    fun observeFavoriteStocks(): Flow<RequestResult<List<StockSymbolDto>>>
+
     suspend fun getCompanyProfile2(symbol: String): RequestResult<CompanyProfile2Dto>
     suspend fun getQuote(symbol: String): RequestResult<QuoteDto>
     suspend fun getCompanyNews(
@@ -50,6 +52,10 @@ interface StocksRepository {
         from: Date,
         to: Date,
     ): RequestResult<AggregatesResponseDto>
+
+    suspend fun updateOrSave(stock: StockSymbolDto)
+
+    suspend fun getStock(symbol: String): RequestResult<StockSymbolDto>
 }
 
 class StocksRepositoryImpl(
@@ -124,6 +130,28 @@ class StocksRepositoryImpl(
             to = to
         ).toRequestResult()
             .map { it.toDto() }
+    }
+
+    override fun observeFavoriteStocks(): Flow<RequestResult<List<StockSymbolDto>>> {
+        return db.observeFavoriteStocks()
+            .map { dbos ->
+                RequestResult.Success(dbos.map { it.toStockSymbolDto() })
+            }
+            .catch { RequestResult.Error<List<StockSymbolDto>>(error = it) }
+    }
+
+    override suspend fun updateOrSave(stock: StockSymbolDto) {
+        db.insert(stock.toStockDbo())
+    }
+
+    override suspend fun getStock(symbol: String): RequestResult<StockSymbolDto> {
+        try {
+            val dbo = db.get(symbol)
+            return RequestResult.Success(dbo!!.toStockSymbolDto())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return RequestResult.Error(error = e)
+        }
     }
 
     private fun getStocksInfoFromCache(): Flow<RequestResult<List<StockSymbolDto>>> {
@@ -242,7 +270,6 @@ class StocksRepositoryImpl(
     }
 
     private suspend fun saveToCache(data: List<StockSymbolDto>) {
-        val dbos = data.map { it.toStockDbo() }
-        db.cleanAndInsert(dbos)
+        db.upsert(data.map { it.toStockDbo() })
     }
 }

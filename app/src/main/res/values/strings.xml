@@ -38,4 +38,6 @@
     <string name="chart_time_range_7d">7D</string>
     <string name="chart_time_range_1m">1M</string>
     <string name="chart_time_range_1y">1Y</string>
+    <string name="trending_stocks">Trending Stocks</string>
+    <string name="favorite_stocks">Favorite Stocks</string>
 </resources>

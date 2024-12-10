@@ -57,7 +57,9 @@ internal fun StockDbo.toStockSymbolDto(): StockSymbolDto = StockSymbolDto(
     description = description,
     currency = currency.code.toCurrency(),
     price = price,
-    percentChange = percentChange
+    percentChange = percentChange,
+    favorite = favorite,
+    imageUrl = imageUrl,
 )
 
 internal fun StockSymbolDto.toStockDbo(): StockDbo = StockDbo(
@@ -68,7 +70,9 @@ internal fun StockSymbolDto.toStockDbo(): StockDbo = StockDbo(
         symbol = currency.symbol
     ),
     price = price,
-    percentChange = percentChange
+    percentChange = percentChange,
+    favorite = favorite,
+    imageUrl = imageUrl,
 )
 
 internal fun CompanyProfile2.toDto(): CompanyProfile2Dto = CompanyProfile2Dto(
