@@ -56,7 +56,8 @@ interface FinnhubApi {
 
     @GET("search")
     suspend fun searchSymbol(
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("exchange") exchange: ExchangeTicker = ExchangeTicker.US
     ): Result<SymbolLookupResponse>
 }
 

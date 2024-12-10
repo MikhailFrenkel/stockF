@@ -27,7 +27,7 @@ class MarketsViewModel(
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val state = _query
-        .debounce(150.milliseconds)
+        .debounce(500.milliseconds)
         .flatMapConcat { onSearch(it) }
         .onEach { state -> println("MarketsState: $state") }
         .stateIn(
