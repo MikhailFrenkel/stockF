@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import com.frenkel.data.models.Symbol
 import com.frenkel.stockf.R
-import com.frenkel.stockf.features.stock_details.models.ChartTimeRange
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
