@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.frenkel.stockf.features.common.components.Card
@@ -27,6 +29,7 @@ import com.frenkel.ui_kit.ui.theme.Satoshi
 import com.frenkel.ui_kit.ui.theme.SmallFontSize
 import com.frenkel.ui_kit.ui.theme.descriptionTextColor
 import com.frenkel.ui_kit.ui.theme.titleTextColor
+import java.util.Locale
 
 @Composable
 internal fun StockItem(
@@ -37,6 +40,7 @@ internal fun StockItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
+            .testTag("stock_item_${item.symbol}".lowercase())
     ) {
         Row(
             modifier = Modifier
