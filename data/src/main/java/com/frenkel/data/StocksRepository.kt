@@ -110,8 +110,9 @@ class StocksRepositoryImpl(
         return flow {
             val marketStatus = finnhubApi.fetchMarketStatus().getOrNull()
             if (marketStatus?.isOpen == true) {
-                finnhubWebSocket.observeTrades(symbols)
+                emitAll(finnhubWebSocket.observeTrades(symbols)
                     .map { it.toDto() }
+                )
             } else {
                 emptyFlow<RealTimeTradesDto>()
             }
