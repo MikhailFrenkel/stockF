@@ -1,5 +1,12 @@
-### design
+### features
+1. stock search
+2. add stock to favorites
+3. real-time price update
+4. stock price change chart (7 days, 1 month, 1 year)
+5. company info
+6. market news
 
+### design
 https://ui8.net/pixlayer/products/invester---stock-investment-app-ui-kit
 
 ### tech-stack:
@@ -9,8 +16,9 @@ https://ui8.net/pixlayer/products/invester---stock-investment-app-ui-kit
 4. room
 5. retrofit
 6. ktor
-7. koin
-8. JUnit, Mockito
+7. WebSocket
+8. koin
+9. JUnit, Mockito
 
 ### useful resources:
 1. https://material-foundation.github.io/material-theme-builder/
