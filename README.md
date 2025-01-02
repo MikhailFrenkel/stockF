@@ -1,3 +1,10 @@
+### demo
+
+
+https://github.com/user-attachments/assets/57542c7c-78e3-4368-a75f-a8a8d112a92a
+
+
+
 ### features
 1. stock search
 2. add stock to favorites
@@ -5,6 +12,7 @@
 4. stock price change chart (7 days, 1 month, 1 year)
 5. company info
 6. market news
+7. Light/Dark themes
 
 ### design
 https://ui8.net/pixlayer/products/invester---stock-investment-app-ui-kit
